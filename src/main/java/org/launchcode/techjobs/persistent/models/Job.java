@@ -1,51 +1,43 @@
 package org.launchcode.techjobs.persistent.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
-public class Job{
-
-    @Id
-    @GeneratedValue
-    private int id;
-
-    private String name;
-
-    private String employer;
-    private String skills;
+public class Job extends AbstractEntity{
+    @ManyToOne
+    @NotNull (message = "employer is required")
+    private Employer employer;
+    @ManyToMany
+    private List<Skill> skills= new ArrayList<>();
 
     public Job() {
     }
 
-    public Job(String anEmployer, String someSkills) {
+    public Job(Employer employer, List skills) {
         super();
-        this.employer = anEmployer;
-        this.skills = someSkills;
+        this.employer = employer;
+        this.skills = skills;
     }
 
     // Getters and setters.
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmployer() {
+    public Employer getEmployer() {
         return employer;
     }
 
-    public void setEmployer(String employer) {
+    public void setEmployer(Employer employer) {
         this.employer = employer;
     }
 
-    public String getSkills() {
+    public List getSkills() {
         return skills;
     }
 
-    public void setSkills(String skills) {
+    public void setSkills(List skills) {
         this.skills = skills;
     }
 }
