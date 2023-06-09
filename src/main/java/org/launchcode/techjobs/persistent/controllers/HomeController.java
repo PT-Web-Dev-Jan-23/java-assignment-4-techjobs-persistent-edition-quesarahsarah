@@ -23,18 +23,16 @@ import java.util.Optional;
 public class HomeController {
     @Autowired
     EmployerRepository employerRepository;
-
     @Autowired
     SkillRepository skillRepository;
     @Autowired
-    private JobRepository jobRepository;
+    JobRepository jobRepository;
 
     @RequestMapping("")
     public String index(Model model) {
 
         model.addAttribute("title", "My Jobs");
         model.addAttribute("jobs", jobRepository.findAll());
-
         return "index";
     }
 
@@ -52,6 +50,7 @@ public class HomeController {
                                        Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
 
         if (errors.hasErrors()) {
+            System.out.println(errors.getAllErrors());
             model.addAttribute("title", "Add Job");
             model.addAttribute(new Job());
             model.addAttribute("employers", employerRepository.findAll());
@@ -64,13 +63,11 @@ public class HomeController {
             Employer employer = optEmployer.get();
             newJob.setEmployer(employer);
         }
-
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
         newJob.setSkills(skillObjs);
 
         jobRepository.save(newJob);
         return "redirect:";
-
     }
 
     @GetMapping("view/{jobId}")
